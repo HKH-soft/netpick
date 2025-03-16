@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
-public class CustomerDataAccessService implements CustomerDAO {
+@Repository("list")
+public class CustomerListDataAccessService implements CustomerDAO {
     private static List<Customer> customers;
 
 	static{
@@ -39,5 +39,16 @@ public class CustomerDataAccessService implements CustomerDAO {
 		.filter(u -> u.getId().equals(customerId))
 		.findFirst();
     }
+
+	@Override
+	public void createCustomer(Customer customer) {
+		customers.add(customer);
+	}
+
+	@Override
+	public boolean existsPersonWithEmail(String email) {
+		return customers.stream()
+			.anyMatch(c -> c.getEmail().equals(email));
+	}
     
 }

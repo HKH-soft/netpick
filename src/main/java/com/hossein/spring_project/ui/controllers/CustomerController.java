@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,9 +24,15 @@ class CustomerController {
 		return customerService.getAllCustomers();
 	}
 	
-	@GetMapping("{id}")
+	@GetMapping("{id}") 
 	public Customer getCustomer(@PathVariable("id") Integer id){
 		return customerService.getCustomerById(id);
+	}
+
+	@PostMapping
+	public void addCustomer(
+			@RequestBody CustomerRegistrationRequest request){
+		customerService.addCustomer(request);
 	}
 
 }
