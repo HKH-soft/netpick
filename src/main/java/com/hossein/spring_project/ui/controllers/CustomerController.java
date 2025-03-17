@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,10 +38,18 @@ class CustomerController {
 		customerService.addCustomer(request);
 	}
 
-	
+
 	@DeleteMapping("{id}")
 	public void deleteCustomer(@PathVariable("id") Integer id){
 		customerService.deleteCustomer(id);
+	}
+
+	@PutMapping("{id}")
+	public void updateCustomer(
+		@PathVariable("id") Integer id,
+		@RequestBody CustomerUpdateRequest customer
+	){
+		customerService.updateCustomer(customer,id);
 	}
 
 }
