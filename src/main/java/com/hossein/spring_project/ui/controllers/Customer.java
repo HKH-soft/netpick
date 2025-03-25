@@ -6,14 +6,25 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
+@Table(
+    name = "customer",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "customer_email_unique", columnNames = { "email" }
+        )
+    }
+)
 public class Customer{
 
     @Id
     @SequenceGenerator(
         name = "customer_id_sequence",
-        sequenceName = "customer_id_sequence"
+        sequenceName = "customer_id_seq",
+        allocationSize = 1
     )
     @GeneratedValue(
         strategy = GenerationType.SEQUENCE,

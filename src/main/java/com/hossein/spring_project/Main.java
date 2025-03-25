@@ -1,12 +1,13 @@
 package com.hossein.spring_project;
 
-import java.util.List;
+import java.util.Random;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.github.javafaker.Faker;
 import com.hossein.spring_project.ui.controllers.Customer;
 import com.hossein.spring_project.ui.controllers.CustomerRepository;
 
@@ -18,21 +19,18 @@ public class Main{
 	}
 	@Bean
 	CommandLineRunner runner(CustomerRepository customerRepository){
-
-
+		
 		return args -> {
-			Customer hossein = new Customer(
-				"hossein",
-				"hossein@khk.com",
-				19
+			Faker faker = new Faker(); 
+			Random random = new Random();
+			var name = faker.name().fullName().toString();
+			Customer customer = new Customer(
+				name,
+				name.replaceAll("\\s", ".")
+				.toLowerCase() + "@example.com",
+				random.nextInt(16,99)
 			);
-			Customer mike = new Customer(
-				"mike",
-				"mike@khk.com",
-				21
-			);
-			List<Customer> customers = List.of(hossein,mike);
-			// customerRepository.saveAll(customers);
+			customerRepository.save(customer);
 			
 		};
 	}	
