@@ -1,4 +1,4 @@
-package com.hossein.spring_project.ui.controllers;
+package com.hossein.spring_project.customer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository("list")
 public class CustomerListDataAccessService implements CustomerDAO {
-    private static List<Customer> customers;
+    private static final List<Customer> customers;
 
 	static{
 		customers = new ArrayList<>();

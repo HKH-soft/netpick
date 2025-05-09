@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.github.javafaker.Faker;
-import com.hossein.spring_project.ui.controllers.Customer;
-import com.hossein.spring_project.ui.controllers.CustomerRepository;
+import com.hossein.spring_project.customer.Customer;
+import com.hossein.spring_project.customer.CustomerRepository;
 
 @SpringBootApplication
 public class Main{

@@ -1,4 +1,4 @@
-package com.hossein.spring_project.ui.controllers;
+package com.hossein.spring_project.customer;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -129,11 +129,8 @@ public class Customer{
         } else if (!email.equals(other.email))
             return false;
         if (age == null) {
-            if (other.age != null)
-                return false;
-        } else if (!age.equals(other.age))
-            return false;
-        return true;
+            return other.age == null;
+        } else return age.equals(other.age);
     }
 
     @Override

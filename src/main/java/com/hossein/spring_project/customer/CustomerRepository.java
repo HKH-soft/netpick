@@ -1,4 +1,4 @@
-package com.hossein.spring_project.ui.controllers;
+ package com.hossein.spring_project.customer;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package com.hossein.spring_project.ui.controllers;
+package com.hossein.spring_project.customer;
 
 import java.util.List;
 import java.util.Optional;
