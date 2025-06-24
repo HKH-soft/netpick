@@ -11,5 +11,5 @@ public class PingPong {
     public PingPongRecord Pong() {
         return new PingPongRecord("pong");
     }
-    
+        
 }
