@@ -36,3 +36,68 @@ jobs:
           cache: 'maven'
       - name: Build and run Integraion Tests with Maven
         run: mvn -ntp -B verify
+      - name: Extract JUnit test summary
+        id: test-summary
+        run: |
+          REPORT=$(find target/surefire-reports -name 'TEST-*.xml' | head -n 1)
+          if [ -f "$REPORT" ]; then
+            TOTAL=$(grep -o 'tests="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
+            FAILURES=$(grep -o 'failures="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
+            ERRORS=$(grep -o 'errors="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
+            SKIPPED=$(grep -o 'skipped="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
+            PASSED=$((TOTAL - FAILURES - ERRORS - SKIPPED))
+          else
+            TOTAL=0
+            PASSED=0
+            FAILURES=0
+            ERRORS=0
+            SKIPPED=0
+          fi
+
+          echo "total=$TOTAL" >> $GITHUB_OUTPUT
+          echo "passed=$PASSED" >> $GITHUB_OUTPUT
+          echo "failures=$FAILURES" >> $GITHUB_OUTPUT
+          echo "errors=$ERRORS" >> $GITHUB_OUTPUT
+          echo "skipped=$SKIPPED" >> $GITHUB_OUTPUT
+      - name: Notify Telegram on success
+        if: success()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ✅ *CI Passed for Pull Request*
+
+            📄 PR Title: `${{ github.event.pull_request.title }}`
+            👤 Author: `${{ github.event.pull_request.user.login }}`
+            🔀 Branch: `${{ github.head_ref }}`
+
+            🧪 *Test Results*:
+            - Total: `${{ steps.test-summary.outputs.total }}`
+            - Passed: `${{ steps.test-summary.outputs.passed }}`
+            - Failed: `${{ steps.test-summary.outputs.failures }}`
+            - Errors: `${{ steps.test-summary.outputs.errors }}`
+            - Skipped: `${{ steps.test-summary.outputs.skipped }}`
+
+            🔗 [View PR](https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
+      - name: Notify Telegram on failure
+        if: failure()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ❌ *CI Failed for Pull Request*
+
+            📄 PR Title: `${{ github.event.pull_request.title }}`
+            👤 Author: `${{ github.event.pull_request.user.login }}`
+            🔀 Branch: `${{ github.head_ref }}`
+
+            🧪 *Test Results* (may be incomplete):
+            - Total: `${{ steps.test-summary.outputs.total }}`
+            - Passed: `${{ steps.test-summary.outputs.passed }}`
+            - Failed: `${{ steps.test-summary.outputs.failures }}`
+            - Errors: `${{ steps.test-summary.outputs.errors }}`
+            - Skipped: `${{ steps.test-summary.outputs.skipped }}`
+
+            🛠 Logs: [Run #${{ github.run_number }}](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
