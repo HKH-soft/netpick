@@ -28,6 +28,19 @@ jobs:
       run:
         working-directory: backend/spring
     steps:
+      - name: Notify Telegram – Build Started
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            🧪 *CI Build Started for PR*
+
+            📄 PR Title: `${{ github.event.pull_request.title }}`
+            👤 Author: `${{ github.event.pull_request.user.login }}`
+            🔀 Branch: `${{ github.head_ref }}`
+            📦 Repo: `${{ github.repository }}`
+            🔗 [View PR](https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
@@ -36,23 +49,37 @@ jobs:
           cache: 'maven'
       - name: Build and run Integraion Tests with Maven
         run: mvn -ntp -B verify
-      - name: Extract JUnit test summary
+      - name: Extract JUnit + Integration Test Summary
         id: test-summary
         run: |
-          REPORT=$(find target/surefire-reports -name 'TEST-*.xml' | head -n 1)
-          if [ -f "$REPORT" ]; then
-            TOTAL=$(grep -o 'tests="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
-            FAILURES=$(grep -o 'failures="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
-            ERRORS=$(grep -o 'errors="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
-            SKIPPED=$(grep -o 'skipped="[0-9]*"' "$REPORT" | grep -o '[0-9]*')
-            PASSED=$((TOTAL - FAILURES - ERRORS - SKIPPED))
-          else
-            TOTAL=0
-            PASSED=0
-            FAILURES=0
-            ERRORS=0
-            SKIPPED=0
-          fi
+          extract_counts() {
+            local DIR=$1
+            local TOTAL=0 FAILURES=0 ERRORS=0 SKIPPED=0
+
+            for FILE in $DIR/TEST-*.xml; do
+              if [[ -f "$FILE" ]]; then
+                t=$(grep -o 'tests="[0-9]*"' "$FILE" | grep -o '[0-9]*' | paste -sd+ - | bc || echo 0)
+                f=$(grep -o 'failures="[0-9]*"' "$FILE" | grep -o '[0-9]*' | paste -sd+ - | bc || echo 0)
+                e=$(grep -o 'errors="[0-9]*"' "$FILE" | grep -o '[0-9]*' | paste -sd+ - | bc || echo 0)
+                s=$(grep -o 'skipped="[0-9]*"' "$FILE" | grep -o '[0-9]*' | paste -sd+ - | bc || echo 0)
+                TOTAL=$((TOTAL + t))
+                FAILURES=$((FAILURES + f))
+                ERRORS=$((ERRORS + e))
+                SKIPPED=$((SKIPPED + s))
+              fi
+            done
+
+            echo "$TOTAL $FAILURES $ERRORS $SKIPPED"
+          }
+
+          read S_TOTAL S_FAILURES S_ERRORS S_SKIPPED <<< $(extract_counts target/surefire-reports)
+          read F_TOTAL F_FAILURES F_ERRORS F_SKIPPED <<< $(extract_counts target/failsafe-reports)
+
+          TOTAL=$((S_TOTAL + F_TOTAL))
+          FAILURES=$((S_FAILURES + F_FAILURES))
+          ERRORS=$((S_ERRORS + F_ERRORS))
+          SKIPPED=$((S_SKIPPED + F_SKIPPED))
+          PASSED=$((TOTAL - FAILURES - ERRORS - SKIPPED))
 
           echo "total=$TOTAL" >> $GITHUB_OUTPUT
           echo "passed=$PASSED" >> $GITHUB_OUTPUT
