@@ -28,7 +28,7 @@ public class CustomerIntegrationTest {
     private WebTestClient webTestClient;
 
     private static final Random RANDOM = new Random();
-    private static final String CUSTOMER_URI = "/api/v1/customers";
+    private static final String CUSTOMER_URI = "/v1/customers";
     @Test
     void canRegisterACustomer(){
         // create reistration request

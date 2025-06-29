@@ -1,32 +1,21 @@
 package com.hossein.spring_project;
 
-import javax.sql.DataSource;
-
+import com.github.javafaker.Faker;
 import org.flywaydb.core.Flyway;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import com.github.javafaker.Faker;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 @Testcontainers
 public abstract class AbstractTestcontainers {
-    
-    @BeforeAll
-    static void BeforeAll(){
-        Flyway flyway = Flyway.configure().dataSource(
-            postgreSQLContainer.getJdbcUrl(),
-            postgreSQLContainer.getUsername(),
-            postgreSQLContainer.getPassword()
-            ).load();
-            flyway.migrate();
-            System.out.println();
-    }
 
     @Container
     protected static final PostgreSQLContainer<?> postgreSQLContainer =
@@ -35,37 +24,46 @@ public abstract class AbstractTestcontainers {
             .withUsername("hossein")
             .withPassword("password");
 
-    @DynamicPropertySource
-    private static void registerDateSourceProperties(DynamicPropertyRegistry registery){
-        registery.add("spring.datasource.url",
-            postgreSQLContainer::getJdbcUrl
-        );
-        
-        registery.add("spring.datasource.username",
-            postgreSQLContainer::getUsername
-        );
-        
-        registery.add("spring.datasource.password",
-            postgreSQLContainer::getPassword
-        );
-        
-
-    }
-
-    private static DataSource getDataSource() {
-        return DataSourceBuilder.create()
-                .driverClassName(postgreSQLContainer.getDriverClassName())
-                .url(postgreSQLContainer.getJdbcUrl())
-                .username(postgreSQLContainer.getUsername())
-                .password(postgreSQLContainer.getPassword()).build();
-        
-    }
-
-    protected static JdbcTemplate getJdbcTemplate(){
-        return new JdbcTemplate(getDataSource());
-    }
+    private static HikariDataSource hikariDataSource;
 
     protected static final Faker faker = new Faker();
-    
 
+    @BeforeAll
+    static void beforeAll() {
+        postgreSQLContainer.start();
+
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(postgreSQLContainer.getJdbcUrl());
+        config.setUsername(postgreSQLContainer.getUsername());
+        config.setPassword(postgreSQLContainer.getPassword());
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(2);
+        config.setIdleTimeout(30000);
+        config.setMaxLifetime(1800000);
+
+        hikariDataSource = new HikariDataSource(config);
+
+        Flyway flyway = Flyway.configure()
+            .dataSource(hikariDataSource)
+            .load();
+        flyway.migrate();
+    }
+    @AfterAll
+    static void afterAll() {
+        if (hikariDataSource != null) {
+            hikariDataSource.close();
+        }
+    }
+
+    protected static JdbcTemplate getJdbcTemplate() {
+        return new JdbcTemplate(hikariDataSource);
+    }
+
+    @DynamicPropertySource
+    private static void registerDateSourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+    }
+    
 }
