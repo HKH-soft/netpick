@@ -1,7 +1,7 @@
 import SidebarDark from "./components/my-components/SidebarDark"
 import { useEffect , useState } from "react"
 import { getCustomers } from "./services/client"
-import Card from "./components/my-components/card"
+import Card from "./components/my-components/Card"
 
 function App() {
 
