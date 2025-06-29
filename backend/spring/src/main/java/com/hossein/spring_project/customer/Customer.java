@@ -43,20 +43,26 @@ public class Customer{
         nullable = false
     )
     private Integer age;
+    @Column(
+        nullable = false
+    )
+    private Boolean gender;
     
     public Customer(){}
 
-    public Customer(Integer id, String name, String email, Integer age) {
+    public Customer(String name, String email, Integer age, Boolean gender) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public Customer(Integer id, String name, String email, Integer age, Boolean gender) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.age = age;
-    }
-
-    public Customer(String name, String email, Integer age) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
+        this.gender = gender;
     }
 
     public Integer getId() {
@@ -91,7 +97,13 @@ public class Customer{
         this.age = age;
     }
 
-    
+    public Boolean getGender() {
+        return gender;
+    }
+
+    public void setGender(Boolean gender) {
+        this.gender = gender;
+    }
 
     @Override
     public int hashCode() {
@@ -101,6 +113,7 @@ public class Customer{
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         result = prime * result + ((age == null) ? 0 : age.hashCode());
+        result = prime * result + ((gender == null) ? 0 : gender.hashCode());
         return result;
     }
 
@@ -129,15 +142,24 @@ public class Customer{
         } else if (!email.equals(other.email))
             return false;
         if (age == null) {
-            return other.age == null;
-        } else return age.equals(other.age);
+            if (other.age != null)
+                return false;
+        } else if (!age.equals(other.age))
+            return false;
+        if (gender == null) {
+            if (other.gender != null)
+                return false;
+        } else if (!gender.equals(other.gender))
+            return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + "]";
+        return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + ", gender=" + gender + "]";
     }
 
+    
     
     
 }

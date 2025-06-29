@@ -61,9 +61,7 @@ function App() {
   return (
     <div className="flex h-screen w-screen">
      {/* Sidebar */}
-      <div className="w-80 bg-gray-900 fixed top-0 left-0 h-screen overflow-y-auto">
-        <SidebarDark />
-      </div>
+      <SidebarDark />
 
       {/* Main Content */}
       <main className="ml-80 flex-1 min-h-screen bg-white text-black p-6 overflow-y-auto">
@@ -76,8 +74,8 @@ function App() {
               category={customer.email}
               href={customer.name}
               price={customer.age}
-              imageSrc={`https://avatar.iran.liara.run/public/${index + 1}`}
-              imageAlt={customer.name}
+              imageSrc={customer.gender == false? `https://randomuser.me/api/portraits/women/${index + 1}.jpg` : `https://randomuser.me/api/portraits/men/${index + 1}.jpg`}
+              imageAlt={customer.gender}
             />
           ))}
         </div>

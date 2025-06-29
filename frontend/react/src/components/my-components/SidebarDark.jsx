@@ -40,7 +40,7 @@ export default function SidebarDark() {
   }
 
   return (
-    <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
+    <div className="w-80 fixed top-0 left-0 h-screen overflow-y-auto flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
       <div className="flex h-16 shrink-0 items-center">
         <img
           alt="Your Company"

@@ -39,7 +39,7 @@ public class CustomerIntegrationTest {
         int age = RANDOM.nextInt(10,90);
 
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-            name, email, age
+            name, email, age,true
         );
 
         // send a post request
@@ -66,7 +66,7 @@ public class CustomerIntegrationTest {
         
         // make sure that customer is present
         Customer expectedCustomer = new Customer(
-            name,email,age
+            name,email,age,true
         );
 
         assertThat(allCustomers)
@@ -103,7 +103,7 @@ public class CustomerIntegrationTest {
         int age = RANDOM.nextInt(10,90);
 
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-            name, email, age
+            name, email, age,true
         );
         // send a post request
         
@@ -162,7 +162,7 @@ public class CustomerIntegrationTest {
         int age = RANDOM.nextInt(10,90);
 
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
-            name, email, age
+                name, email, age,true
         );
         // send a post request
         
@@ -197,7 +197,7 @@ public class CustomerIntegrationTest {
         // update customer
 
         Customer update = new Customer(
-                fakerName.name(),fakerName.lastName() + UUID.randomUUID() + "@example.com",age + 11
+                fakerName.name(),fakerName.lastName() + UUID.randomUUID() + "@example.com",age + 11,false
         );
 
         webTestClient.put()

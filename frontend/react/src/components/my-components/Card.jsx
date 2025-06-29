@@ -20,10 +20,10 @@ export default function Card(props) {
                 <h3>
                   <a href="#">
                     <span aria-hidden="true" className="absolute inset-0" />
-                    {props.name}
+                    {props.name} | {props.imageAlt == false ? 'Female' : 'Male'}
                   </a>
                 </h3>
-                <p>{props.price}</p>
+                <p>Age: {props.price}</p>
               </div>
               <p className="mt-1 text-sm text-gray-500">{props.category}</p>
             </div>

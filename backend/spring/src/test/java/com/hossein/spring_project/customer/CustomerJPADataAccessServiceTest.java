@@ -30,7 +30,7 @@ public class CustomerJPADataAccessServiceTest {
     void testCreateCustomer() {
 
         Customer customer = new Customer(
-            "hossein","hossein@email.com",19);
+            "hossein","hossein@email.com",19,true);
         
         underTest.createCustomer(customer);
 
@@ -94,7 +94,7 @@ public class CustomerJPADataAccessServiceTest {
     void testUpdateCustomer() {
 
         Customer customer = new Customer(
-            "hossein","hossein@email.com",19);
+            "hossein","hossein@email.com",19,true);
         
         underTest.updateCustomer(customer);
 

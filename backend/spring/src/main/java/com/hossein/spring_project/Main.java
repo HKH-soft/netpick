@@ -3,6 +3,15 @@ package com.hossein.spring_project;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
+// import org.springframework.context.annotation.Bean;
+// import java.util.Random;
+// import org.springframework.beans.factory.annotation.Qualifier;
+// import org.springframework.boot.CommandLineRunner;
+// import com.github.javafaker.Faker;
+// import com.hossein.spring_project.customer.Customer;
+// import com.hossein.spring_project.customer.CustomerDAO;
+
 @SpringBootApplication
 public class Main{
 	
@@ -10,20 +19,14 @@ public class Main{
 		SpringApplication.run(Main.class,args);
 	}
 	// @Bean
-	// CommandLineRunner runner(CustomerRepository customerRepository){
+	// CommandLineRunner runner(@Qualifier("jdbc") CustomerDAO customerDao){
 		
-	// 	return args -> {
+	// 	return args -> {         
 	// 		Faker faker = new Faker(); 
 	// 		Random random = new Random();
-	// 		var name = faker.name().fullName().toString();
-	// 		Customer customer = new Customer(
-	// 			name,
-	// 			name.replaceAll("\\s", ".")
-	// 			.toLowerCase() + "@example.com",
-	// 			random.nextInt(16,99)
-	// 		);
-	// 		customerRepository.save(customer);
-			
+	// 		for (int i = 0; i < 50; i++) {
+	// 			customerDao.createCustomer(new Customer(faker.name().fullName(),faker.name().fullName().toString().replaceAll("\\s", ".").toLowerCase() + "@example.com",random.nextInt(16,99),random.nextBoolean())); 
+	// 		}
 	// 	};
-	// }	
+	// }
 }

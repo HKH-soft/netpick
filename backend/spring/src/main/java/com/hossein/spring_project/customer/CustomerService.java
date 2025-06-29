@@ -32,15 +32,17 @@ public class CustomerService {
         if (customerDao.existsPersonWithEmail(email)){
             throw new DuplicateResourceExeption("email already exists.");
         }
-        if( CustomerRegistrationRequest.name()  == null || 
-            CustomerRegistrationRequest.email() == null ||
-            CustomerRegistrationRequest.age()   == null ){
+        if( CustomerRegistrationRequest.name()   == null || 
+            CustomerRegistrationRequest.email()  == null ||
+            CustomerRegistrationRequest.age()    == null ||
+            CustomerRegistrationRequest.gender() == null ){
             throw new RequestValidationExeption("There is an empty parameter.");
         }
         Customer customer = new Customer(
             CustomerRegistrationRequest.name(),
             CustomerRegistrationRequest.email(),
-            CustomerRegistrationRequest.age()
+            CustomerRegistrationRequest.age(),
+            CustomerRegistrationRequest.gender()
         );
         customerDao.createCustomer(customer);
     }
@@ -73,6 +75,10 @@ public class CustomerService {
                 throw new DuplicateResourceExeption("email already exists.");
             }
             customer.setEmail(customerRequest.email());
+            changed = true;
+        }
+        if(customerRequest.gender() != null && !customer.getGender().equals(customerRequest.gender())){
+            customer.setGender(customerRequest.gender());
             changed = true;
         }
         if (!changed) {
