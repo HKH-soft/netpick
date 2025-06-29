@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://hkh-soft.github.io/spring-project/",
+  "homepage": "https://netpick.ir/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -14,6 +14,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/vite": "^4.1.11",
+    "axios": "^1.10.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "serve": "^14.2.4"
