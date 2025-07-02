@@ -28,8 +28,7 @@ function classNames(...classes) {
 
 export default function SidebarDark() {
 
-    const [navigation, setNavigation] = useState(initialNavigation)
-
+  const [navigation, setNavigation] = useState(initialNavigation)
   const handleClick = (clickedName) => {
     setNavigation(currentNav =>
       currentNav.map(item => ({
