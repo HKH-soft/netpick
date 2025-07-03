@@ -1,9 +1,11 @@
-import { Formik, Form, useField } from 'formik';
+'use client'
+
+import { useEffect } from 'react'
+import { Formik, Form, useField ,useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import { XCircleIcon } from '@heroicons/react/20/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid'
-import { getCustomers, saveCustomer } from '../../services/client';
-import Notification from './Notification';
+import { saveCustomer } from '../../services/client';
 
 const MyTextInput = ({ label, ...props }) => {
 // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
@@ -80,9 +82,19 @@ return (
 };
 
 // And now we can use these
-const CreateCustomerForm = ({fetchCustomers,setDisable}) => {
+const CreateCustomerForm = ({fetchCustomers, setDisable, addNotification}) => {
+    
+    const FormDisabler = () => {
+        const { isSubmitting, isValid, dirty } = useFormikContext();
+        
+        useEffect(() => {
+            setDisable(isSubmitting || !(dirty && isValid));
+        }, [isSubmitting, isValid, dirty, setDisable]);
+        
+        return null;
+    };
+
 return (
-    <>
     <Formik
         initialValues={{
         firstName: '',
@@ -94,9 +106,11 @@ return (
         validationSchema={Yup.object({
         firstName: Yup.string()
             .max(15, 'Must be 15 characters or less')
+            .matches(/^[a-zA-Z\s]*$/, 'Name can only contain English letters and spaces')
             .required('Required'),
         lastName: Yup.string()
             .max(20, 'Must be 20 characters or less')
+            .matches(/^[a-zA-Z\s]*$/, 'Name can only contain English letters and spaces')
             .required('Required'),
         email: Yup.string()
             .email('Invalid email address')
@@ -112,71 +126,72 @@ return (
             .min(16,'Must be 16 years or more')
             .required('Required'),
         })}
-        onSubmit={({firstName,lastName , gender ,...rest}, { setSubmitting }) => {
+        onSubmit={({ firstName, lastName, gender, ...rest }, { setSubmitting }) => {
             const customer = rest;
-            customer["name"] = firstName.trim() + " " + lastName.trim();
-            customer["gender"] = gender === "Male" ? true : false;
+            customer.name = `${firstName.trim()} - ${lastName.trim()}`;
+            customer.gender = gender === "Male" ? true : false ;
             setSubmitting(true);
+            
             saveCustomer(customer)
                 .then(res => {
-                    // fetchCustomers()
-                    return(<Notification text="sdf;lgks';gklsdfgsdfgsdfg"/>)
+                    addNotification(`${customer.name} was successfully saved!`);
+                    fetchCustomers();
                 })
                 .catch(err => {
-                    console.log(err)
+                    addNotification(err.response.data.message, 'error');
                 })
                 .finally(() => {
-                    setSubmitting(false)
-                    console.log("done")
+                    setSubmitting(false);
                 })
         }}
     >
-        <Form
-            id='createCustomer'
-            className='grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'
-        >
-        <MyTextInput
-            gridsize="3"
-            label="First Name"
-            name="firstName"
-            type="text"
-            placeholder="Jane"
-        />
+        <div>
+            <FormDisabler />
+            <Form
+                id='createCustomer'
+                className='grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'
+            >
+            <MyTextInput
+                gridsize="3"
+                label="First Name"
+                name="firstName"
+                type="text"
+                placeholder="Jane"
+            />
 
-        <MyTextInput
-            gridsize="3"
-            label="Last Name"
-            name="lastName"
-            type="text"
-            placeholder="Doe"
-        />
+            <MyTextInput
+                gridsize="3"
+                label="Last Name"
+                name="lastName"
+                type="text"
+                placeholder="Doe"
+            />
 
-        <MyTextInput
-            gridsize="full"
-            label="Email Address"
-            name="email"
-            type="email"
-            placeholder="jane@formik.com"
-        />
+            <MyTextInput
+                gridsize="full"
+                label="Email Address"
+                name="email"
+                type="email"
+                placeholder="jane@formik.com"
+            />
 
-        <MySelect label="Gender" name="gender" gridsize="4">
-            <option value="">Select Gender</option>
-            <option value="Female">Female</option>
-            <option value="Male">Male</option>
-        </MySelect>
+            <MySelect label="Gender" name="gender" gridsize="4">
+                <option value="">Select Gender</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </MySelect>
 
-        <MyTextInput
-            gridsize="2"
-            label="Age"
-            name="age"
-            type="text"
-            placeholder="21"
-        />
+            <MyTextInput
+                gridsize="2"
+                label="Age"
+                name="age"
+                type="text"
+                placeholder="21"
+            />
 
-        </Form>
-        
+            </Form>
+        </div>
     </Formik>
-    </>
 );
 };
 

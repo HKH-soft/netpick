@@ -60,4 +60,6 @@ dist-ssr
 *.sln
 *.sw?
 
+
+frontend/react/src/components/application-ui
 **/application-ui/

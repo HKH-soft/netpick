@@ -25,7 +25,18 @@ services:
     depends_on:
       - db
     restart: unless-stopped
-    command: 
+    command:
+  frontend-react:
+    container_name: frontend-react
+    image: blackpuss/react
+    build:
+      context: frontend/react
+    ports:
+      - "3000:5173"
+    depends_on:
+      - spring-project
+    restart: unless-stopped
+
 networks:
   db:
     driver: bridge

@@ -1,4 +1,4 @@
-name: CI - Build Backend
+name: Github Page - Build
 
 on:
   push:

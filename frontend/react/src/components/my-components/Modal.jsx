@@ -1,18 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useState ,useEffect } from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import FormOnLight from './Form'
 import CreateCustomerForm from './CreateCustomerForm'
 
 
-export default function Modal({fetchCustomers}) {
+export default function Modal({fetchCustomers,addNotification}) {
     const [open, setOpen] = useState(false)
     const [disable, setDisable] = useState(true)
 
     return (
-    <div>
+        <div>
         <button
         onClick={() => setOpen(true)}
         className="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10"
@@ -33,14 +33,25 @@ export default function Modal({fetchCustomers}) {
                 >
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 text-gray-900">
                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Create Customer</h3>
-                    <CreateCustomerForm fetchCustomers={fetchCustomers} setDisable={setDisable} ></CreateCustomerForm>
+                    <CreateCustomerForm fetchCustomers={fetchCustomers} setDisable={setDisable} addNotification={addNotification} ></CreateCustomerForm>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                     type="submit"
                     form='createCustomer'
-                    // disabled={disable}
-                    className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 sm:ml-3 sm:w-auto"
+                    disabled={disable}
+                    className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs sm:ml-3 sm:w-auto ${
+                        disable 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-indigo-600 hover:bg-indigo-500 rounded-md'
+                    }`}
+                    onClick={() => {
+                        // Close modal when form is submitted successfully
+                        const form = document.getElementById('createCustomer');
+                        if (form && form.checkValidity()) {
+                        setTimeout(() => setOpen(false), 500); // Close after a slight delay
+                        }
+                    }}
                     >
                     Create
                     </button>

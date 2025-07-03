@@ -39,11 +39,11 @@ export default function SidebarDark() {
   }
 
   return (
-    <div className="w-80 fixed top-0 left-0 h-screen overflow-y-auto flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6">
+    <div className="w-80 fixed top-0 left-0 h-screen overflow-y-auto flex grow flex-col gap-y-5 overflow-y-auto bg-zinc-900 px-6">
       <div className="flex h-16 shrink-0 items-center">
         <img
           alt="Your Company"
-          src="https://tailwindui.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
+          src="/src/assets/logo-with-text.svg"
           className="h-8 w-auto"
         />
       </div>
