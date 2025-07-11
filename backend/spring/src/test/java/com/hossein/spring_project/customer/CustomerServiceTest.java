@@ -17,6 +17,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 // import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.hossein.spring_project.exception.DuplicateResourceExeption;
 import com.hossein.spring_project.exception.RequestValidationExeption;
@@ -28,14 +29,16 @@ public class CustomerServiceTest {
 
     @Mock
     private CustomerDAO customerDAO;
-    
+    @Mock
+    private PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
     private CustomerService underTest;
     // private AutoCloseable autoCloseableMock;
     
     @BeforeEach
     void setUp(){
         // autoCloseableMock = MockitoAnnotations.openMocks(this);
-        underTest = new CustomerService(customerDAO);
+        underTest = new CustomerService(customerDAO,passwordEncoder,customerDTOMapper);
     }
 
     // @AfterEach
@@ -54,10 +57,13 @@ public class CustomerServiceTest {
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
             "hossein",
             email,
+            "password",
             19,
             true
         );
 
+        String passwrodHash = "!@%@456489$654654^4654%64&64@6$6@6$6&";
+        when(passwordEncoder.encode(request.password())).thenReturn(passwrodHash);
         underTest.addCustomer(request);
 
         ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(
@@ -72,6 +78,8 @@ public class CustomerServiceTest {
         assertThat(customer.getEmail()).isEqualTo(request.email());
         assertThat(customer.getAge()).isEqualTo(request.age());
         assertThat(customer.getGender()).isEqualTo(request.gender());
+        assertThat(customer.getPassword()).isEqualTo(passwrodHash);
+        
         
     }
 
@@ -83,7 +91,7 @@ public class CustomerServiceTest {
         CustomerRegistrationRequest request = new CustomerRegistrationRequest(
             "hossein",
             email,
-            19,
+                "password", 19,
             true
         );
 
@@ -138,12 +146,14 @@ public class CustomerServiceTest {
     void canGetCustomerById() {
 
         int id = 1;
-        Customer customer = new Customer(id,"hossein","email",19,true);
+        Customer customer = new Customer(id,"hossein","email","password",19, true);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
-        Customer actual = underTest.getCustomerById(id);
+        CustomerDTO expected = customerDTOMapper.apply(customer);
 
-        assertThat(actual).isEqualTo(customer);
+        CustomerDTO actual = underTest.getCustomerById(id);
+
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -189,7 +199,7 @@ public class CustomerServiceTest {
             name,email,age,true
         );
         Customer update = new Customer(
-            name,email,age,true
+            name,email,"password",age, true
         );
 
         when(customerDAO.existsPersonWithId(id)).thenReturn(true);
@@ -213,7 +223,7 @@ public class CustomerServiceTest {
             name,newEmail,age,true
         );
         Customer update = new Customer(
-            id,name,email,age,true
+            id,name,email,"password",age, true
             );
             
         when(customerDAO.existsPersonWithId(id)).thenReturn(true);
@@ -249,7 +259,7 @@ public class CustomerServiceTest {
             name,newEmail,age,true
         );
         Customer update = new Customer(
-            name,email,age,true
+            name,email,"password",age, true
         );
 
         when(customerDAO.existsPersonWithId(id)).thenReturn(true);
@@ -274,7 +284,7 @@ public class CustomerServiceTest {
             newName,email,age,true
         );
         Customer update = new Customer(
-            id,name,email,age,true
+            id,name,email,"password",age, true
         );
 
         when(customerDAO.existsPersonWithId(id)).thenReturn(true);
@@ -309,7 +319,7 @@ public class CustomerServiceTest {
             name,email,newAge,true
         );
         Customer update = new Customer(
-            id,name,email,age,true
+            id,name,email,"password",age, true
         );
 
         when(customerDAO.existsPersonWithId(id)).thenReturn(true);
@@ -344,7 +354,7 @@ public class CustomerServiceTest {
             name,email,age,false
         );
         Customer update = new Customer(
-            id,name,email,age,true
+            id,name,email,"password",age, true
         );
 
         when(customerDAO.existsPersonWithId(id)).thenReturn(true);
@@ -379,8 +389,8 @@ public class CustomerServiceTest {
             id,
             "name",
             "email",
-            21,
-            true
+            "password",
+            21, true
         );
 
         String newEmail = "newEmail";

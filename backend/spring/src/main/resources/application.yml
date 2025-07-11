@@ -18,7 +18,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql : true
     show-sql: true
 server:
   port: 8080
@@ -27,3 +27,10 @@ server:
 cors:
   allowed-origins: "*"
   allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
+
+
+jwt:
+  token:
+    secret: "hkh_is_REAL_!^!#$^!$^!$%!#$%%#%^*$*$%&@#@#%$%!#^$@$&@^*#%(#&(#%^*@&%^!#$^!$#^@%&@$&@$^*@$^&%^@#$%))_hkh_is_REAL_!^!#$^!$^!$%!#$%%#%^*$*$%&@#@#%$%!#^$@$&@^*#%(#&(#%^*@&%^!#$^!$#^@%&@$&@$^*@$^&%^@#$%))_hkh_is_REAL_!^!#$^!$^!$%!#$%%#%^*$*$%&@#@#%$%!#^$@$&@^*#%(#&(#%^*@&%^!#$^!$#^@%&@$&@$^*@$^&%^@#$%))"

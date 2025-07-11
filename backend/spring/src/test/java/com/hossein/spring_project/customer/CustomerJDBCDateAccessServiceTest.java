@@ -30,8 +30,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             faker.internet().emailAddress() + "-" + UUID.randomUUID(),
-            20,
-            true);
+            "password",
+            20, true);
         underTest.createCustomer(customer);
 
         List<Customer> actual = underTest.selectAllCustomers();
@@ -47,8 +47,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true);
+            "password",
+            20, true);
         underTest.createCustomer(customer);
         Integer id = underTest.selectAllCustomers()
                         .stream()
@@ -85,8 +85,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true);
+            "password",
+            20, true);
 
         underTest.createCustomer(customer);
         Optional<Customer> actual = underTest.selectAllCustomers()
@@ -113,8 +113,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
         );
         underTest.createCustomer(customer);
 
@@ -143,8 +143,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
         );
         underTest.createCustomer(customer);
 
@@ -179,8 +179,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
         );
         underTest.createCustomer(customer);
 
@@ -205,8 +205,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
             );
         String newName = "hosi";
         underTest.createCustomer(customer);
@@ -240,8 +240,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
             );
         String newEmail = faker.internet().emailAddress() + "-" + UUID.randomUUID();
         underTest.createCustomer(customer);
@@ -274,8 +274,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
             );
         Integer newAge = 11 ;
         underTest.createCustomer(customer);
@@ -308,8 +308,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
             );
         underTest.createCustomer(customer);
         Integer id = underTest.selectAllCustomers()
@@ -342,8 +342,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
             );
         underTest.createCustomer(customer);
         Integer id = underTest.selectAllCustomers()
@@ -374,8 +374,8 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         Customer customer = new Customer(
             faker.name().fullName(),
             email,
-            20,
-            true
+            "password",
+            20, true
             );
         underTest.createCustomer(customer);
 

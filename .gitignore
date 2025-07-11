@@ -61,5 +61,5 @@ dist-ssr
 *.sw?
 
 
-frontend/react/src/components/application-ui
 **/application-ui/
+/frontend/react/src/components/application-ui/

@@ -1,5 +1,12 @@
 package com.hossein.spring_project.customer;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +25,7 @@ import jakarta.persistence.UniqueConstraint;
         )
     }
 )
-public class Customer{
+public class Customer implements UserDetails{
 
     @Id
     @SequenceGenerator(
@@ -48,19 +55,36 @@ public class Customer{
     )
     private Boolean gender;
     
+    @Column(
+        nullable = false
+
+    )
+    private String password;
+
     public Customer(){}
 
-    public Customer(String name, String email, Integer age, Boolean gender) {
+    public Customer(String name,
+                    String email,
+                    String password,
+                    Integer age,
+                    Boolean gender) {
         this.name = name;
         this.email = email;
+        this.password = password;
         this.age = age;
         this.gender = gender;
     }
 
-    public Customer(Integer id, String name, String email, Integer age, Boolean gender) {
+    public Customer(Integer id,
+                    String name,
+                    String email,
+                    String password,
+                    Integer age,
+                    Boolean gender) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
         this.age = age;
         this.gender = gender;
     }
@@ -157,6 +181,21 @@ public class Customer{
     @Override
     public String toString() {
         return "Customer [id=" + id + ", name=" + name + ", email=" + email + ", age=" + age + ", gender=" + gender + "]";
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.email;
     }
 
     

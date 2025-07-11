@@ -25,7 +25,7 @@ public class CustomerRowMapperTest {
         Customer actual = customerRowMapper.mapRow(resualtSet,1);
 
         Customer expected = new Customer(
-            1,"name","email",19,false
+            1,"name","email","password",19, false
         );
         assertThat(actual).isEqualTo(expected);
     }
