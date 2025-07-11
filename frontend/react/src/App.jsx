@@ -86,7 +86,7 @@ function App() {
       <main className="ml-80 flex-1 min-h-screen bg-white text-black p-6 overflow-y-auto">
         <div className="flex flex-col gap-y-4">
           <Modal fetchCustomers={fetchCustomers}></Modal>      
-          <h1>Ooops there was an error '{error}'</h1>
+          <h1>Ooops there was an error '{error.toString()}'</h1>
         </div>
       </main>
     </div>

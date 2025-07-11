@@ -1,4 +1,4 @@
-name: CI - Build Backend
+name: CI - Build Frontend React
 
 on:
   workflow_dispatch:
