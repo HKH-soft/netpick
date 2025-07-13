@@ -17,27 +17,27 @@ export default function Card(props) {
             <img
               alt={props.imageAlt}
               src={props.imageSrc}
-              className="aspect-4/3 w-full rounded-lg bg-gray-100 object-cover"
+              className="aspect-4/3 w-full rounded-lg bg-zinc-100 object-cover"
             />
             <div
               aria-hidden="true"
               className="absolute inset-0 flex gap-x-3 items-end p-4 bg-white/20 opacity-0 group-hover:opacity-100  transform shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out "
             >
-              <button onClick={() => setShowAlert(true)} className="w-full rounded-md bg-red-500/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter">
+              <button onClick={() => setShowAlert(true)} className="w-full rounded-md bg-red-500/75 px-4 py-2 text-center text-sm font-medium text-zinc-900 backdrop-blur-sm backdrop-filter">
                 Delete Customer
               </button>
-              <button onClick={() => setShowUpdateModal(true)} className="w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-gray-900 backdrop-blur-sm backdrop-filter">
+              <button onClick={() => setShowUpdateModal(true)} className="w-full rounded-md bg-white/75 px-4 py-2 text-center text-sm font-medium text-zinc-900 backdrop-blur-sm backdrop-filter">
                 Update Customer
               </button>
             </div>
           </div>
-          <div className="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-gray-900">
+          <div className="mt-4 flex items-center justify-between space-x-8 text-base font-medium text-zinc-900">
             <h3>
               {props.name} | {props.gender == false ? 'Female' : 'Male'}
             </h3>
             <p>Age: {props.age}</p>
           </div>
-          <p className="mt-1 text-sm text-gray-500">{props.email}</p>
+          <p className="mt-1 text-sm text-zinc-500">{props.email}</p>
         </div>
   )
 }

@@ -6,7 +6,10 @@ import {
   FolderIcon,
   HomeIcon,
   UsersIcon,
+  ArrowLeftStartOnRectangleIcon
 } from '@heroicons/react/24/outline'
+import { useAuth } from '../context/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const initialNavigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true},
@@ -27,7 +30,8 @@ function classNames(...classes) {
 }
 
 export default function SidebarDark() {
-
+  const {logout,customer} = useAuth()
+  const navigate = useNavigate()
   const [navigation, setNavigation] = useState(initialNavigation)
   const handleClick = (clickedName) => {
     setNavigation(currentNav =>
@@ -43,7 +47,7 @@ export default function SidebarDark() {
       <div className="flex h-16 shrink-0 items-center">
         <img
           alt="Your Company"
-          src="/src/assets/logo-with-text.svg"
+          src="/images/logo-with-text.svg"
           className="h-8 w-auto"
         />
       </div>
@@ -57,7 +61,7 @@ export default function SidebarDark() {
                     href={item.href}
                     onClick={() => handleClick(item.name)}
                     className={classNames(
-                      item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                      item.current ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white',
                       'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                     )}
                   >
@@ -66,7 +70,7 @@ export default function SidebarDark() {
                     {item.count ? (
                       <span
                         aria-hidden="true"
-                        className="ml-auto w-9 min-w-max rounded-full bg-gray-900 px-2.5 py-0.5 text-center text-xs/5 font-medium whitespace-nowrap text-white ring-1 ring-gray-700 ring-inset"
+                        className="ml-auto w-9 min-w-max rounded-full bg-zinc-900 px-2.5 py-0.5 text-center text-xs/5 font-medium whitespace-nowrap text-white ring-1 ring-zinc-700 ring-inset"
                       >
                         {item.count}
                       </span>
@@ -77,18 +81,18 @@ export default function SidebarDark() {
             </ul>
           </li>
           <li>
-            <div className="text-xs/6 font-semibold text-gray-400">Your teams</div>
+            <div className="text-xs/6 font-semibold text-zinc-400">Your teams</div>
             <ul role="list" className="-mx-2 mt-2 space-y-1">
               {teams.map((team) => (
                 <li key={team.name}>
                   <a
                     href={team.href}
                     className={classNames(
-                      team.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white',
+                      team.current ? 'bg-zinc-800 text-white' : 'text-zinc-400 hover:bg-zinc-800 hover:text-white',
                       'group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold',
                     )}
                   >
-                    <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white">
+                    <span className="flex size-6 shrink-0 items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 text-[0.625rem] font-medium text-zinc-400 group-hover:text-white">
                       {team.initial}
                     </span>
                     <span className="truncate">{team.name}</span>
@@ -98,17 +102,31 @@ export default function SidebarDark() {
             </ul>
           </li>
           <li className="-mx-6 mt-auto">
+              <a
+                href=''
+                onClick={() => {logout(); navigate("/")}}
+                className='text-zinc-400 hover:bg-zinc-800 hover:text-white group flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold mx-4'
+              >
+                <ArrowLeftStartOnRectangleIcon aria-hidden="true" className="size-6 shrink-0" />
+                Sign Out
+              </a>
             <a
               href="#"
-              className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white hover:bg-gray-800"
+              className="flex items-center gap-x-4 px-6 py-3 text-sm/6 font-semibold text-white hover:bg-zinc-800"
             >
               <img
                 alt=""
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                className="size-8 rounded-full bg-gray-800"
+                src={customer?.gender == false? `https://randomuser.me/api/portraits/women/${customer?.id - 1}.jpg` : `https://randomuser.me/api/portraits/men/${customer?.id - 1}.jpg`}
+                className="size-8 rounded-full bg-zinc-800"
               />
               <span className="sr-only">Your profile</span>
-              <span aria-hidden="true">Tom Cook</span>
+              <span className="flex flex-col w-full"> 
+                <span aria-hidden="true">{customer?.username}</span>
+                {/* <span className="flex flex-row w-full"> */}
+                  {/* <span aria-hidden="true" className='text-sm font-medium text-zinc-400'>{customer != null ? customer.email.length > 17 ? customer.email.substring(0,17) + "..." : customer.email :""}</span> */}
+                  <span aria-hidden="true" className='text-sm font-medium text-zinc-400 ml-auto'>{customer?.roles[0] == "ROLE_USER" ? "User" : ""}</span>
+                {/* </span> */}
+              </span>
             </a>
           </li>
         </ul>

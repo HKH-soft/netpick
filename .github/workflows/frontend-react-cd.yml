@@ -1,4 +1,4 @@
-name: CI - Build Frontend React
+name: CD - Build Frontend React
 
 on:
   workflow_dispatch:
@@ -64,7 +64,7 @@ jobs:
             🧱 Build Version: `${{ steps.build-number.outputs.BUILD_NUMBER }}`
             🔗 [View Commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
       - name: Build Docker Image with Dockerfile
-        run: docker build . --push -t blackpuss/react:${{steps.build-number.outputs.BUILD_NUMBER}}
+        run: docker build . --push -t blackpuss/react:${{steps.build-number.outputs.BUILD_NUMBER}} -t blackpuss/react
       - name: action is completed!
         if: success()
         uses: appleboy/telegram-action@master

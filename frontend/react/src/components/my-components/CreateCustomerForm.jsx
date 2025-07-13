@@ -15,13 +15,13 @@ const [field, meta] = useField(props);
 return (
     <>
     <div className={`sm:col-span-${props.gridsize}`}>
-        <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-gray-900">
+        <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-zinc-900">
             {label}
         </label>
         <div className="mt-2">
             <input
             {...field} {...props}
-            className="text-input block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            className="text-input block w-full rounded-md bg-white px-3 py-1.5 text-base text-zinc-900 outline-1 -outline-offset-1 outline-zinc-300 placeholder:text-zinc-400 focus:outline-2 focus:-outline-offset-2 focus:outline-emerald-600 sm:text-sm/6"
             />
         </div>
     {meta.touched && meta.error ? (
@@ -48,18 +48,18 @@ const [field, meta] = useField(props);
 return (
     <div className={`sm:col-span-${props.gridsize}`}>
         <div>
-            <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-gray-900">
+            <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-zinc-900">
                 {label}
             </label>
             <div className="mt-2 grid grid-cols-1">
                 <select
                 {...field} {...props}
-                className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-zinc-900 outline-1 -outline-offset-1 outline-zinc-300 focus:outline-2 focus:-outline-offset-2 focus:outline-emerald-600 sm:text-sm/6"
                 >
                 </select>
                 <ChevronDownIcon
                 aria-hidden="true"
-                className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-zinc-500 sm:size-4"
                 />
             </div>
         </div>
@@ -96,10 +96,12 @@ const CreateCustomerForm = ({fetchCustomers, setDisable, addNotification}) => {
 
 return (
     <Formik
+        validateOnMount={true}
         initialValues={{
         firstName: '',
         lastName: '',
         email: '',
+        password: '',
         age: '',
         gender: '', 
         }}
@@ -115,13 +117,17 @@ return (
         email: Yup.string()
             .email('Invalid email address')
             .required('Required'),
+        password:Yup.string()
+            .min(8,"Password cannot be shorter than 8 characters")
+            .max(30,"Password cannot be longer than 30 characters")
+            .required("Password is required"),
         gender: Yup.string()
             .oneOf(
             ['Female','Male'],
             'Invalid Gender'
             )
             .required('Required'),
-        age: Yup.number()
+        age: Yup.number("Must be a Number")
             .max(100,'Must be 100 years or less')
             .min(16,'Must be 16 years or more')
             .required('Required'),
@@ -173,6 +179,14 @@ return (
                 name="email"
                 type="email"
                 placeholder="jane@formik.com"
+            />
+
+            <MyTextInput
+                    gridsize="full"
+                    label={"Password"}
+                    name={"password"}
+                    type={"password"}
+                    placeholder={"Type your password"}
             />
 
             <MySelect label="Gender" name="gender" gridsize="4">

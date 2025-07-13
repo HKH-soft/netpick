@@ -17,8 +17,10 @@
     "@tailwindcss/vite": "^4.1.11",
     "axios": "^1.10.0",
     "formik": "^2.4.6",
+    "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.3",
     "serve": "^14.2.4",
     "yep": "^0.1.0",
     "yup": "^1.6.1"

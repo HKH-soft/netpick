@@ -4,7 +4,6 @@ import { getCustomers, deleteCustomer, getCustomer } from "./services/client"
 import Card from "./components/my-components/Card"
 import Modal from "./components/my-components/Modal"
 import Notification from "./components/my-components/Notification"
-import UpdateModal from "./components/my-components/UpdateCustomerForm"
 
 function App() {
 
@@ -20,7 +19,7 @@ function App() {
       fetchCustomers();
     })
     .catch(err => {
-      addNotification(err , "error");
+      addNotification(err.response.data.message , "error");
     })
   }
 
@@ -42,7 +41,7 @@ function App() {
       setCustomers(res.data)
     }).catch(err => {
       setError(err);
-      addNotification(err, 'error');
+      addNotification(err.response.data.message, 'error');
     }).finally(() => {
       setLoading(false)
     })
@@ -55,7 +54,7 @@ function App() {
     return (
       <div className="flex h-screen w-screen">
         {/* Sidebar */}
-        <div className="w-80 bg-gray-900 shrink-0">
+        <div className="w-80 bg-zinc-900 shrink-0">
           <SidebarDark />
         </div>
 
@@ -67,7 +66,7 @@ function App() {
         {/* Fullscreen blurred loading overlay */}
         <div className="fixed inset-0 z-50 backdrop-blur-sm bg-black/40 flex items-center justify-center">
           <div
-            className="w-12 h-12 rounded-full animate-spin border-4 border-solid border-gray-900 border-t-transparent"
+            className="w-12 h-12 rounded-full animate-spin border-4 border-solid border-zinc-900 border-t-transparent"
             aria-label="Loading"
           ></div>
         </div>
@@ -85,10 +84,29 @@ function App() {
       {/* Main Content */}
       <main className="ml-80 flex-1 min-h-screen bg-white text-black p-6 overflow-y-auto">
         <div className="flex flex-col gap-y-4">
-          <Modal fetchCustomers={fetchCustomers}></Modal>      
-          <h1>Ooops there was an error '{error.toString()}'</h1>
+          <Modal  fetchCustomers={fetchCustomers} 
+                  addNotification={addNotification}
+          ></Modal>     
+          <h1>Ooops there was an error</h1>
         </div>
       </main>
+
+      {/* Global notification live region, render this permanently at the end of the document */}
+      <div
+        aria-live="assertive"
+        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+      >
+        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+              {notifications.map((notification) => (
+                        <Notification 
+                            key={notification.id}
+                            text={notification.message}
+                            type={notification.type}
+                        />
+                    ))}
+        </div>
+      </div>
+
     </div>
 
     )
@@ -103,10 +121,29 @@ function App() {
       {/* Main Content */}
       <main className="ml-80 flex-1 min-h-screen bg-white text-black p-6 overflow-y-auto">
         <div className="flex flex-col gap-y-4">
-          <Modal fetchCustomers={fetchCustomers}></Modal>      
+          <Modal  fetchCustomers={fetchCustomers} 
+                  addNotification={addNotification}
+          ></Modal>     
           <h1>no customer was found</h1>
         </div>
       </main>
+
+      {/* Global notification live region, render this permanently at the end of the document */}
+      <div
+        aria-live="assertive"
+        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+      >
+        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
+              {notifications.map((notification) => (
+                        <Notification 
+                            key={notification.id}
+                            text={notification.message}
+                            type={notification.type}
+                        />
+                    ))}
+        </div>
+      </div>
+
     </div>
 
     )

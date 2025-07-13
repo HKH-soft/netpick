@@ -16,13 +16,13 @@ const [field, meta] = useField(props);
 return (
     <>
     <div className={`sm:col-span-${props.gridsize}`}>
-        <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-gray-900">
+        <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-zinc-900">
             {label}
         </label>
         <div className="mt-2">
             <input
             {...field} {...props}
-            className="text-input block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            className="text-input block w-full rounded-md bg-white px-3 py-1.5 text-base text-zinc-900 outline-1 -outline-offset-1 outline-zinc-300 placeholder:text-zinc-400 focus:outline-2 focus:-outline-offset-2 focus:outline-emerald-600 sm:text-sm/6"
             />
         </div>
     {meta.touched && meta.error ? (
@@ -49,18 +49,18 @@ const [field, meta] = useField(props);
 return (
     <div className={`sm:col-span-${props.gridsize}`}>
         <div>
-            <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-gray-900">
+            <label htmlFor={props.id || props.name} className="block text-sm/6 font-medium text-zinc-900">
                 {label}
             </label>
             <div className="mt-2 grid grid-cols-1">
                 <select
                 {...field} {...props}
-                className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                className="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-zinc-900 outline-1 -outline-offset-1 outline-zinc-300 focus:outline-2 focus:-outline-offset-2 focus:outline-emerald-600 sm:text-sm/6"
                 >
                 </select>
                 <ChevronDownIcon
                 aria-hidden="true"
-                className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-zinc-500 sm:size-4"
                 />
             </div>
         </div>
@@ -103,7 +103,7 @@ export default function UpdateModal({fetchCustomers,addNotification,onClose,past
         <Dialog open={open} onClose={ () => {setOpen(false);onClose();}} className="relative z-10">
         <DialogBackdrop
             transition
-            className="fixed inset-0 bg-gray-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
+            className="fixed inset-0 bg-zinc-500/75 transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"
         />
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -111,9 +111,10 @@ export default function UpdateModal({fetchCustomers,addNotification,onClose,past
                 transition
                 className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95"
                 >
-                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 text-gray-900">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Create Customer</h3>
+                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 text-zinc-900">
+                    <h3 className="text-lg font-semibold text-zinc-900 mb-3">Create Customer</h3>
                     <Formik
+                        validateOnMount={true}
                         initialValues={{
                         firstName: `${fName}`,
                         lastName: `${lName}`,
@@ -135,7 +136,7 @@ export default function UpdateModal({fetchCustomers,addNotification,onClose,past
                             ['Female','Male'],
                             'Invalid Gender'
                             ),
-                        age: Yup.number()
+                        age: Yup.number("Must be a Number")
                             .max(100,'Must be 100 years or less')
                             .min(16,'Must be 16 years or more'),
                         })}
@@ -206,15 +207,15 @@ export default function UpdateModal({fetchCustomers,addNotification,onClose,past
                         </div>
                     </Formik>
                 </div>
-                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <div className="bg-zinc-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                     type="submit"
                     form='createCustomer'
                     disabled={disable}
                     className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs sm:ml-3 sm:w-auto ${
                         disable 
-                        ? 'bg-gray-400 cursor-not-allowed' 
-                        : 'bg-indigo-600 hover:bg-indigo-500 rounded-md'
+                        ? 'bg-zinc-400 cursor-not-allowed' 
+                        : 'bg-emerald-600 hover:bg-emerald-500 rounded-md'
                     }`}
                     onClick={() => {
                         // Close modal when form is submitted successfully
@@ -230,7 +231,7 @@ export default function UpdateModal({fetchCustomers,addNotification,onClose,past
                     type="button"
                     data-autofocus
                     onClick={() => {setOpen(false);onClose();}}
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white-900 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 ring-inset hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white-900 px-3 py-2 text-sm font-semibold text-zinc-900 shadow-xs ring-1 ring-zinc-300 ring-inset hover:bg-zinc-50 sm:mt-0 sm:w-auto"
                     >
                     Cancel
                     </button>
