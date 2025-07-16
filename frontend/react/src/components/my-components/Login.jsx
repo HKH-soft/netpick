@@ -1,3 +1,5 @@
+'use client'
+
 import { Form, Formik, useField} from "formik";
 import { XCircleIcon } from '@heroicons/react/20/solid';
 import { useEffect , useState } from "react"
@@ -102,13 +104,6 @@ const LoginForm = () => {
                         ? 'bg-zinc-400 cursor-not-allowed' 
                         : 'bg-emerald-600 hover:bg-emerald-500 rounded-md'
                     }`}
-                    onClick={() => {
-                        // Close modal when form is submitted successfully
-                        const form = document.getElementById('createCustomer');
-                        if (form && form.checkValidity()) {
-                        setTimeout(() => {setOpen(false);onClose();}, 500); // Close after a slight delay
-                        }
-                    }}
                     >
                     Login
                 </button>
@@ -149,7 +144,7 @@ const Login = () => {
                 <LoginForm/>
                 <p className="mt-10 text-center text-sm/6 text-white-500">
                     Not a member?{' '}
-                    <a href="#" className="font-semibold text-emerald-600 hover:text-emerald-500">
+                    <a href="/register" className="font-semibold text-emerald-600 hover:text-emerald-500">
                     Register Now
                     </a>
                 </p>

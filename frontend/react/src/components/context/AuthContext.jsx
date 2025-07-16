@@ -1,5 +1,5 @@
 import { createContext,useContext,useEffect,useState } from "react";
-import { login as performLogin } from "../../services/client.js";
+import { login as performLogin ,saveCustomer as performRegister} from "../../services/client.js";
 import {jwtDecode } from "jwt-decode"
 
 const AuthContext = createContext({})
@@ -52,13 +52,31 @@ const AuthProvider = ({ children }) => {
         }
         return true
     }
+
+    const register = async (customer) =>{
+            return new Promise((resolve, reject) => {
+            performRegister(customer).then(res => {
+                const jwtToken = res.headers["authorization"]
+                localStorage.setItem("access_token",jwtToken)
+                const decodedToken = jwtDecode(jwtToken)
+                setCustomer({
+                    username: decodedToken.sub,
+                    roles: decodedToken.scopes
+                })
+                resolve(res); 
+            }).catch(err => {
+                reject(err);
+            })
+            })
+    }
     
     return (
         <AuthContext.Provider value={{
             customer,
             login,
             logout,
-            isUserAuthenticated
+            isUserAuthenticated,
+            register
         }} >
             {children }
         </AuthContext.Provider>

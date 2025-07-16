@@ -6,6 +6,7 @@ import AuthProvider from './components/context/AuthContext.jsx'
 import Login from "./components/my-components/Login.jsx"
 import './index.css'
 import ProtectedRoute from './components/Shared/ProtectedRoute.jsx'
+import Register from './components/my-components/Register.jsx'
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: "dashboard",
     element: <ProtectedRoute><App/></ProtectedRoute>
+  },
+  {
+    path: "register",
+    element:<Register/>
   }
 ])
 
