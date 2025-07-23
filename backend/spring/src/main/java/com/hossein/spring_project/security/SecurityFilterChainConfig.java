@@ -37,6 +37,8 @@ public class SecurityFilterChainConfig {
         http.authorizeHttpRequests(request -> { request
             .requestMatchers(HttpMethod.POST, "/v1/customers","/v1/auth/login")
             .permitAll()
+            .requestMatchers(HttpMethod.GET,"/actuator/**")
+            .permitAll()
             .anyRequest().authenticated();
         });
         http.sessionManagement(request -> {request.sessionCreationPolicy(SessionCreationPolicy.STATELESS);});
