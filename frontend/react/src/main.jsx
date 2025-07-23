@@ -1,14 +1,14 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
-import {createBrowserRouter, RouterProvider} from "react-router-dom"
+import {RouterProvider,createHashRouter} from "react-router-dom"
 import AuthProvider from './components/context/AuthContext.jsx'
 import Login from "./components/my-components/Login.jsx"
 import './index.css'
 import ProtectedRoute from './components/Shared/ProtectedRoute.jsx'
 import Register from './components/my-components/Register.jsx'
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element:<Login/>

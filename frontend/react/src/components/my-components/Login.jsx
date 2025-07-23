@@ -144,7 +144,7 @@ const Login = () => {
                 <LoginForm/>
                 <p className="mt-10 text-center text-sm/6 text-white-500">
                     Not a member?{' '}
-                    <a href="/register" className="font-semibold text-emerald-600 hover:text-emerald-500">
+                    <a href="/#/register" className="font-semibold text-emerald-600 hover:text-emerald-500">
                     Register Now
                     </a>
                 </p>
