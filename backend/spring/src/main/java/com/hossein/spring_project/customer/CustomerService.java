@@ -16,14 +16,15 @@ public class CustomerService {
     private final CustomerDAO customerDao;
     private final PasswordEncoder passwordEncoder;
     private final CustomerDTOMapper customerDTOMapper;
-    public CustomerService(@Qualifier("jdbc") CustomerDAO customerDao, PasswordEncoder passwordEncoder,CustomerDTOMapper customerDTOMapper) {
+    public CustomerService(@Qualifier("jpa") CustomerDAO customerDao, PasswordEncoder passwordEncoder,CustomerDTOMapper customerDTOMapper) {
         this.customerDao = customerDao;
         this.passwordEncoder = passwordEncoder;
         this.customerDTOMapper = customerDTOMapper;
     }
 
-    public List<CustomerDTO> getAllCustomers(){
-        return customerDao.selectAllCustomers()
+    public List<CustomerDTO> getAllCustomers(Integer page){
+        Integer pageSize = 10;
+        return customerDao.selectAllCustomers(page,pageSize)
                     .stream()
                     .map(customerDTOMapper)
                     .collect(Collectors.toList());

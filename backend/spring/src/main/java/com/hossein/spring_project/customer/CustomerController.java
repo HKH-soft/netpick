@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hossein.spring_project.jwt.JWTUtil;
@@ -28,8 +29,8 @@ class CustomerController {
     }
 
     @GetMapping
-	public List<CustomerDTO> getResponse(){
-		return customerService.getAllCustomers();
+	public List<CustomerDTO> getResponse(@RequestParam(defaultValue = "1") Integer page){
+		return customerService.getAllCustomers(page <= 1 ? 0 : --page);
 	}
 	
 	@GetMapping("{id}") 

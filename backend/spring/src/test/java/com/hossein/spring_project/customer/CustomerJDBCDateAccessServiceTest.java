@@ -34,7 +34,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             20, true);
         underTest.createCustomer(customer);
 
-        List<Customer> actual = underTest.selectAllCustomers();
+        List<Customer> actual = underTest.selectAllCustomers(0,10);
 
         assertThat(actual).isNotEmpty();
 
@@ -50,7 +50,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             "password",
             20, true);
         underTest.createCustomer(customer);
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
                         .stream()
                         .filter(c -> c.getEmail().equals(email))
                         .map(Customer::getId)
@@ -89,7 +89,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             20, true);
 
         underTest.createCustomer(customer);
-        Optional<Customer> actual = underTest.selectAllCustomers()
+        Optional<Customer> actual = underTest.selectAllCustomers(0,10000)
                         .stream()
                         .filter(c -> c.getEmail().equals(email))
                         .findFirst();
@@ -148,7 +148,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         );
         underTest.createCustomer(customer);
 
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
                         .stream()
                         .filter(c -> c.getEmail().equals(email))
                         .map(Customer::getId)
@@ -184,7 +184,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
         );
         underTest.createCustomer(customer);
 
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
                         .stream()
                         .filter(c -> c.getEmail().equals(email))
                         .map(Customer::getId)
@@ -210,7 +210,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             );
         String newName = "hosi";
         underTest.createCustomer(customer);
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
             .stream()
             .filter(c -> c.getEmail().equals(email))
             .map(Customer::getId)
@@ -245,7 +245,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             );
         String newEmail = faker.internet().emailAddress() + "-" + UUID.randomUUID();
         underTest.createCustomer(customer);
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
             .stream()
             .filter(c -> c.getEmail().equals(email))
             .map(Customer::getId)
@@ -279,7 +279,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             );
         Integer newAge = 11 ;
         underTest.createCustomer(customer);
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
             .stream()
             .filter(c -> c.getEmail().equals(email))
             .map(Customer::getId)
@@ -312,7 +312,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             20, true
             );
         underTest.createCustomer(customer);
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
             .stream()
             .filter(c -> c.getEmail().equals(email))
             .map(Customer::getId)
@@ -346,7 +346,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             20, true
             );
         underTest.createCustomer(customer);
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
             .stream()
             .filter(c -> c.getEmail().equals(email))
             .map(Customer::getId)
@@ -379,7 +379,7 @@ class CustomerJDBCDateAccessServiceTest extends AbstractTestcontainers {
             );
         underTest.createCustomer(customer);
 
-        Integer id = underTest.selectAllCustomers()
+        Integer id = underTest.selectAllCustomers(0,10000)
             .stream()
             .filter(c -> c.getEmail().equals(email))
             .map(Customer::getId)

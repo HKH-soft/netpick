@@ -19,12 +19,13 @@ public class CustomerJDBCDateAccessService implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> selectAllCustomers() {
+    public List<Customer> selectAllCustomers(Integer page, Integer pageSize) {
         var sql = """
                 SELECT id, name, email, password, age, gender
                 FROM customer
+                LIMIT ? OFFSET ?
                 """;
-        return jdbcTemplate.query(sql, customerRowMapper);
+        return jdbcTemplate.query(sql, customerRowMapper, pageSize ,page * pageSize);
     }
 
     @Override

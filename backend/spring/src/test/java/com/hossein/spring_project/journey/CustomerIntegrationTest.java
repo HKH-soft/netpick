@@ -159,6 +159,7 @@ void canDeleteCustomer(){
                 .expectBodyList(new ParameterizedTypeReference<CustomerDTO>() {})
                 .returnResult()
                 .getResponseBody();
+        System.out.println(allCustomers.size());
         
 
         // get customer by id

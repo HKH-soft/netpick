@@ -136,9 +136,9 @@ public class CustomerServiceTest {
     @Test
     void testGetAllCustomers() {
 
-        underTest.getAllCustomers();
+        underTest.getAllCustomers(0);
 
-        verify(customerDAO).selectAllCustomers();
+        verify(customerDAO).selectAllCustomers(0,10);
 
     }
 

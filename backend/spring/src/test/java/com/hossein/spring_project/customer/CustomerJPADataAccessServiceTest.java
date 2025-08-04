@@ -1,12 +1,21 @@
 package com.hossein.spring_project.customer;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public class CustomerJPADataAccessServiceTest {
     
@@ -71,12 +80,41 @@ public class CustomerJPADataAccessServiceTest {
     }
 
     @Test
-    void testSelectAllCustomers() {
+    void selectAllCustomersShouldReturnEmptyListWhenNoCustomers() {
+        // Arrange
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Customer> customerPage = Page.empty(pageable);
+        
+        // Mock the repository to return the empty page
+        when(customerRepository.findAll(pageable)).thenReturn(customerPage);
+        
+        // Act
+        List<Customer> result = underTest.selectAllCustomers(0, 10);
+        
+        // Assert
+        assertThat(result).isEmpty();
+        verify(customerRepository).findAll(pageable);
+    }
 
-        underTest.selectAllCustomers();
-  
-        verify(customerRepository).findAll();
-
+    @Test
+    void selectAllCustomersShouldReturnCustomersWhenTheyExist() {
+        // Arrange
+        Pageable pageable = PageRequest.of(0, 10);
+        List<Customer> customers = Arrays.asList(
+            new Customer(1,"name","email1","password",21,true),
+            new Customer(2,"name","email2","password",21,true)
+        );
+        Page<Customer> customerPage = new PageImpl<>(customers, pageable, customers.size());
+        
+        when(customerRepository.findAll(pageable)).thenReturn(customerPage);
+        
+        // Act
+        List<Customer> result = underTest.selectAllCustomers(0, 10);
+        
+        // Assert
+        assertThat(result).hasSize(2);
+        assertThat(result).containsExactlyElementsOf(customers);
+        verify(customerRepository).findAll(pageable);
     }
 
     @Test

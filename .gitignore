@@ -63,3 +63,6 @@ dist-ssr
 
 **/application-ui/
 /frontend/react/src/components/application-ui/
+
+
+*.code-workspace

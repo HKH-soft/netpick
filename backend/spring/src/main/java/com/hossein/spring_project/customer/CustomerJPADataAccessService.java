@@ -3,7 +3,12 @@ package com.hossein.spring_project.customer;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+
+import io.jsonwebtoken.lang.Collections;
 
 @Repository("jpa")
 public class CustomerJPADataAccessService implements CustomerDAO {
@@ -17,8 +22,10 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     }
 
     @Override
-    public List<Customer> selectAllCustomers() {
-        return customerRepository.findAll();
+    public List<Customer> selectAllCustomers(Integer page,Integer pageSize) {
+        Pageable pageable = PageRequest.of(page,pageSize);
+        Page<Customer> pageContent =  customerRepository.findAll(pageable);
+        return pageContent.hasContent() ? pageContent.getContent() : Collections.emptyList();
     }
 
     @Override
